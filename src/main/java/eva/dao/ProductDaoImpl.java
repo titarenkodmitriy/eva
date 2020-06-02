@@ -16,7 +16,7 @@ public class ProductDaoImpl  implements IProductDAO{
     JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<Product> getAllProduct() {
+    public List<Product> getAllProduct(){
         return jdbcTemplate.query("SELECT * FROM products", new ProductMapper());
     }
 
@@ -24,7 +24,6 @@ public class ProductDaoImpl  implements IProductDAO{
     public Product getById(Integer id){
         List<Product> list = jdbcTemplate.query("select * from products where id = ?",
                 new Object[]{Integer.valueOf(id)}, new ProductMapper());
-        System.out.println("List size - " + list.size() );
         if(list.size() == 1){
             return list.get(0);
         }else return null;

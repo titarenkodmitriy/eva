@@ -21,9 +21,10 @@ public class ProductController {
     IProductService service;
 
     @GetMapping("/product")
-    public void getProduct(@RequestParam(value = "nameFilter") String filter, HttpServletResponse resp)
+    public void getProduct(@RequestParam(value = "nameFilter") String filter,
+                           @RequestParam(value = "not", defaultValue = "true") Boolean not,
+                           HttpServletResponse resp)
             throws Exception {
-System.out.println("Filter is " + filter);
         resp.setContentType("application/json; charset=utf-8");
         Pattern pattern = Pattern.compile(filter);
 
@@ -37,7 +38,7 @@ System.out.println("Filter is " + filter);
                 .filter(e->
                     {
                         Matcher matcher = pattern.matcher(e.getName());
-                        return matcher.find();
+                        return not ? !matcher.find() : matcher.find();
                     })
                 .forEach( e->{
                     try {
